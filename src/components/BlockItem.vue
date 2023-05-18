@@ -38,6 +38,7 @@ export default{
     },
     async mounted(){
         this.block = await this.getBlock(this.blockNumberOrHash)
+        console.log(this.blockNumberOrHash)
     },
     watch:{
         async blockNumberOrHash(){

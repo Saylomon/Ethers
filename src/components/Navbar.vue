@@ -20,7 +20,7 @@ export default {
     data(){
         return{
             blockNumberOrHash: "",
-            txHash: ""
+            txHash: "",
         }
     }
 }

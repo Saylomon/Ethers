@@ -8,7 +8,8 @@
         <div class="tx_info">To: {{ transaction.to }}</div>
         <div class="tx_info">Value: {{ transaction.value }}</div>
         <div class="tx_info">Gas Price: {{ transaction.gasPrice }}</div>
-        <div class="tx_info">Nonce: {{ transaction.nonce }}</div>
+        <div class="tx_info">Gas Used: {{ GasUsed }}</div>
+        <div class="tx_info">TX Status: {{ txStatus }}</div>
     </div>
 </template>
 
@@ -18,7 +19,9 @@ export default {
     name: 'tx-item',
     data(){
         return{
-            transaction: {}
+            transaction: {},
+            txStatus: "",
+            GasUsed: ""
         }
     },
     props:{
@@ -29,15 +32,28 @@ export default {
     },
     methods: {
         ...mapActions({
-            getTransaction: "getTransaction"
+            getTransaction: "getTransaction",
+            getStatus: "getStatus",
+            getGasUsed: "getGasUsed"
         })
+    },
+    async gGas(){
+        this.GasUsed = await this.getGasUsed(this.txHash)
     },
     async mounted() {
         this.transaction = await this.getTransaction(this.txHash)
+        this.txStatus = await this.getStatus(this.transaction.hash)
+        this.GasUsed = await this.getGasUsed(this.txHash)
     },
     watch:{
         async txHash(){
             this.transaction = await this.getTransaction(this.txHash)
+        },
+        async txStatus(){
+            this.txStatus = await this.getStatus()
+        },
+        async GasUsed(){
+            this.GasUsed = await this.getGasUsed()
         }
     }
 }
